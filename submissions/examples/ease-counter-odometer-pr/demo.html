@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mechanical Odometer Counter - EaseMotion CSS</title>
+  
+  <!-- Link to EaseMotion CSS core variables and utilities -->
+  <link rel="stylesheet" href="../../../core/variables.css">
+  <link rel="stylesheet" href="../../../core/animations.css">
+  
+  <!-- Link to submission local styles -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="playground-container">
+    
+    <!-- Header -->
+    <header class="header">
+      <span class="badge-tag">Featured Component</span>
+      <h1>ease-counter-odometer</h1>
+      <p class="subtitle">A premium, high-fidelity mechanical rolling counter animation driven by CSS transitions.</p>
+    </header>
+
+    <!-- Main Showcase Counter -->
+    <div class="counter-showcase">
+      <span class="showcase-label">Live Active Visitors</span>
+      <div class="ease-counter-odometer main-odometer ease-odometer-medium" id="visitors-odometer" data-value="128450">
+        <!-- Will be populated dynamically by JS to show mechanical rolls -->
+      </div>
+      <div style="font-size: 0.85rem; color: #475569; display: flex; align-items: center; gap: 0.5rem;">
+        <span style="display:inline-block; width: 8px; height: 8px; background: #22c55e; border-radius: 50%; animation: ease-kf-pulse-fade 1.5s infinite;"></span>
+        Real-time telemetry simulator active
+      </div>
+    </div>
+
+    <!-- Main Controls Panel -->
+    <div class="controls-panel">
+      <div class="button-group">
+        <button class="btn btn-primary" id="btn-increment">
+          <span>+</span> Increment (+13)
+        </button>
+        <button class="btn" id="btn-decrement">
+          <span>-</span> Decrement (-7)
+        </button>
+        <button class="btn" id="btn-random">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+          Randomize
+        </button>
+        <button class="btn" id="btn-toggle-sim">
+          <span id="sim-status-dot" style="display:inline-block; width: 8px; height: 8px; background: #94a3b8; border-radius: 50%;"></span>
+          <span id="sim-status-text">Start Sim Traffic</span>
+        </button>
+      </div>
+
+      <!-- Transition Speed Selectors -->
+      <div class="speed-control">
+        <span class="speed-label">Rolling Duration:</span>
+        <div class="speed-options">
+          <button class="speed-opt" data-speed="ease-odometer-fast">Fast (150ms)</button>
+          <button class="speed-opt active" data-speed="ease-odometer-medium">Medium (300ms)</button>
+          <button class="speed-opt" data-speed="ease-odometer-slow">Slow (600ms)</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Extra Multi-Counters Showcase -->
+    <div class="additional-stats">
+      <!-- Slot Machine / Jackpot -->
+      <div class="stat-card">
+        <span class="stat-header">Lucky Slot Machine</span>
+        <div class="stat-val-wrapper">
+          <div class="ease-counter-odometer stat-odometer ease-odometer-slow" id="slots-odometer" data-value="123456" style="color: #fbbf24; text-shadow: 0 0 15px rgba(251, 191, 36, 0.3);"></div>
+        </div>
+        <button class="btn btn-primary" id="btn-spin-slots" style="padding: 0.5rem 1rem; font-size: 0.85rem; width: fit-content; align-self: flex-start;">
+          🎰 Spin / Jackpot
+        </button>
+        <span class="stat-desc">Slow mechanical bouncy ease (777777 targets jackpot)</span>
+      </div>
+
+      <!-- Currency Revenue -->
+      <div class="stat-card">
+        <span class="stat-header">Total Revenue Generated</span>
+        <div class="stat-val-wrapper">
+          <span class="stat-val-prefix">$</span>
+          <div class="ease-counter-odometer stat-odometer ease-odometer-medium" id="revenue-odometer" data-value="5428.95" style="color: #34d399; text-shadow: 0 0 15px rgba(52, 211, 153, 0.3);"></div>
+        </div>
+        <button class="btn btn-danger" id="btn-reset-rev" style="padding: 0.5rem 1rem; font-size: 0.85rem; width: fit-content; align-self: flex-start;">
+          Reset Revenue
+        </button>
+        <span class="stat-desc">Supports commas, decimals, and custom currencies</span>
+      </div>
+    </div>
+
+    <!-- Integration Code Section -->
+    <div class="code-section">
+      <div class="code-title">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        How to Use
+      </div>
+      <div class="code-box-wrapper">
+        <button class="code-copy-btn" id="btn-copy-code">Copy Code</button>
+        <pre><code id="code-snippet">&lt;!-- 1. Include HTML structure with digit reels --&gt;
+&lt;div class="ease-counter-odometer ease-odometer-medium" id="my-counter"&gt;
+  &lt;span class="ease-odometer-column"&gt;
+    &lt;span class="ease-odometer-reel" style="--ease-odometer-digit: 5;"&gt;
+      &lt;span&gt;0&lt;/span&gt;&lt;span&gt;1&lt;/span&gt;&lt;span&gt;2&lt;/span&gt;&lt;span&gt;3&lt;/span&gt;&lt;span&gt;4&lt;/span&gt;
+      &lt;span&gt;5&lt;/span&gt;&lt;span&gt;6&lt;/span&gt;&lt;span&gt;7&lt;/span&gt;&lt;span&gt;8&lt;/span&gt;&lt;span&gt;9&lt;/span&gt;
+    &lt;/span&gt;
+  &lt;/span&gt;
+&lt;/div&gt;
+
+&lt;!-- 2. Use JS helper to update value dynamically --&gt;
+&lt;script&gt;
+  // Simply change --ease-odometer-digit CSS property on the reel:
+  const reel = document.querySelector('.ease-odometer-reel');
+  reel.style.setProperty('--ease-odometer-digit', '9'); // rolls smoothly to 9!
+&lt;/script&gt;</code></pre>
+      </div>
+
+      <!-- Highlight Features -->
+      <div class="features-list">
+        <div class="feature-item">
+          <div class="feature-icon">✨</div>
+          <div class="feature-text">
+            <h4>Pure CSS Rolling</h4>
+            <p>Physics-accurate translation animations powered entirely by CSS transitions.</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">⚡</div>
+          <div class="feature-text">
+            <h4>Tabular Alignment</h4>
+            <p>Uses monospace layout to guarantee columns stay centered and aligned perfectly.</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">♿</div>
+          <div class="feature-text">
+            <h4>Accessibility Native</h4>
+            <p>Respects system settings automatically via prefers-reduced-motion media rules.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- JavaScript Telemetry, Diffing, and Interactive Playground Handlers -->
+  <script>
+    // --- ODO CONTROLLER LIBRARY ---
+    
+    // Creates HTML for a single digit column containing vertical reels 0-9
+    function createDigitColumn(initialDigit) {
+      const col = document.createElement('span');
+      col.className = 'ease-odometer-column';
+      
+      const reel = document.createElement('span');
+      reel.className = 'ease-odometer-reel';
+      reel.style.setProperty('--ease-odometer-digit', initialDigit);
+      
+      for (let i = 0; i <= 9; i++) {
+        const digitSpan = document.createElement('span');
+        digitSpan.textContent = i;
+        reel.appendChild(digitSpan);
+      }
+      
+      col.appendChild(reel);
+      return col;
+    }
+
+    // Creates static non-digit separators
+    function createSeparator(char) {
+      const sep = document.createElement('span');
+      sep.className = 'ease-odometer-separator';
+      sep.textContent = char;
+      return sep;
+    }
+
+    // Updates an odometer container to a target numeric value
+    function updateOdometer(container, value, isCurrency = false) {
+      let str = "";
+      if (isCurrency) {
+        // Format as standard decimal number (e.g. 5,428.95)
+        str = Number(value).toLocaleString('en-US', {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        });
+      } else {
+        // Format as integer (e.g. 128,450)
+        str = Math.round(value).toLocaleString('en-US');
+      }
+
+      const targetChars = str.split('');
+      let children = Array.from(container.childNodes);
+
+      // Diff column lengths: prepend placeholders to grow
+      while (children.length < targetChars.length) {
+        const placeholder = document.createElement('span');
+        container.insertBefore(placeholder, container.firstChild);
+        children.unshift(placeholder);
+      }
+
+      // Diff column lengths: remove from left to shrink
+      while (children.length > targetChars.length) {
+        const first = children.shift();
+        container.removeChild(first);
+      }
+
+      // Apply updates character-by-character to preserve existing DOM state transitions
+      for (let i = 0; i < targetChars.length; i++) {
+        const char = targetChars[i];
+        const child = children[i];
+
+        if (char >= '0' && char <= '9') {
+          if (!child.classList || !child.classList.contains('ease-odometer-column')) {
+            const newCol = createDigitColumn(char);
+            container.replaceChild(newCol, child);
+            children[i] = newCol;
+          } else {
+            const reel = child.querySelector('.ease-odometer-reel');
+            if (reel) {
+              reel.style.setProperty('--ease-odometer-digit', char);
+            }
+          }
+        } else {
+          if (!child.classList || !child.classList.contains('ease-odometer-separator')) {
+            const newSep = createSeparator(char);
+            container.replaceChild(newSep, child);
+            children[i] = newSep;
+          } else {
+            if (child.textContent !== char) {
+              child.textContent = char;
+            }
+          }
+        }
+      }
+      
+      container.setAttribute('data-value', value);
+    }
+
+    // --- INTERACTIVE HANDLERS & SIMULATIONS ---
+
+    document.addEventListener("DOMContentLoaded", () => {
+      // Elements
+      const visitorsOdo = document.getElementById("visitors-odometer");
+      const slotsOdo = document.getElementById("slots-odometer");
+      const revenueOdo = document.getElementById("revenue-odometer");
+
+      // Initialize counters
+      let visitorsVal = parseInt(visitorsOdo.getAttribute("data-value") || "128450", 10);
+      let slotsVal = parseInt(slotsOdo.getAttribute("data-value") || "123456", 10);
+      let revenueVal = parseFloat(revenueOdo.getAttribute("data-value") || "5428.95");
+
+      updateOdometer(visitorsOdo, visitorsVal);
+      updateOdometer(slotsOdo, slotsVal);
+      updateOdometer(revenueOdo, revenueVal, true);
+
+      // 1. Showcase controls
+      document.getElementById("btn-increment").addEventListener("click", () => {
+        visitorsVal += 13;
+        updateOdometer(visitorsOdo, visitorsVal);
+        
+        // Also add small random revenue increments
+        revenueVal += (Math.random() * 5 + 1.25);
+        updateOdometer(revenueOdo, revenueVal, true);
+      });
+
+      document.getElementById("btn-decrement").addEventListener("click", () => {
+        if (visitorsVal >= 7) {
+          visitorsVal -= 7;
+        } else {
+          visitorsVal = 0;
+        }
+        updateOdometer(visitorsOdo, visitorsVal);
+      });
+
+      document.getElementById("btn-random").addEventListener("click", () => {
+        visitorsVal = Math.floor(Math.random() * 899999) + 100000;
+        updateOdometer(visitorsOdo, visitorsVal);
+      });
+
+      // 2. Traffic Simulator
+      let simInterval = null;
+      const btnToggleSim = document.getElementById("btn-toggle-sim");
+      const simStatusDot = document.getElementById("sim-status-dot");
+      const simStatusText = document.getElementById("sim-status-text");
+
+      function startTrafficSimulation() {
+        simInterval = setInterval(() => {
+          // Adjust visitor count
+          const diff = Math.floor(Math.random() * 25) - 8; // skewed positive
+          visitorsVal = Math.max(0, visitorsVal + diff);
+          updateOdometer(visitorsOdo, visitorsVal);
+
+          // Adjust revenue
+          if (diff > 0) {
+            revenueVal += (diff * (Math.random() * 1.5 + 0.5));
+            updateOdometer(revenueOdo, revenueVal, true);
+          }
+        }, 1200);
+
+        simStatusDot.style.background = "#22c55e";
+        simStatusText.textContent = "Stop Sim Traffic";
+        btnToggleSim.classList.add("btn-active-sim");
+      }
+
+      function stopTrafficSimulation() {
+        if (simInterval) {
+          clearInterval(simInterval);
+          simInterval = null;
+        }
+        simStatusDot.style.background = "#94a3b8";
+        simStatusText.textContent = "Start Sim Traffic";
+        btnToggleSim.classList.remove("btn-active-sim");
+      }
+
+      btnToggleSim.addEventListener("click", () => {
+        if (simInterval) {
+          stopTrafficSimulation();
+        } else {
+          startTrafficSimulation();
+        }
+      });
+
+      // Start simulation by default on page load for interactive aesthetics
+      startTrafficSimulation();
+
+      // 3. Speed selection logic
+      const speedOpts = document.querySelectorAll(".speed-opt");
+      speedOpts.forEach(opt => {
+        opt.addEventListener("click", () => {
+          speedOpts.forEach(o => o.classList.remove("active"));
+          opt.classList.add("active");
+
+          const speedClass = opt.getAttribute("data-speed");
+          // Remove old speeds and apply new
+          visitorsOdo.classList.remove("ease-odometer-fast", "ease-odometer-medium", "ease-odometer-slow");
+          visitorsOdo.classList.add(speedClass);
+        });
+      });
+
+      // 4. Slots / Jackpot logic
+      const btnSpinSlots = document.getElementById("btn-spin-slots");
+      let spinTimeout = null;
+
+      btnSpinSlots.addEventListener("click", () => {
+        if (spinTimeout) return;
+        
+        btnSpinSlots.disabled = true;
+        btnSpinSlots.textContent = "🎰 Spinning...";
+
+        // Initial spin to a random number to simulate reel speed
+        slotsVal = Math.floor(Math.random() * 899999) + 100000;
+        updateOdometer(slotsOdo, slotsVal);
+
+        // Spin to a jackpot victory of "777777" after a brief mechanical delay
+        spinTimeout = setTimeout(() => {
+          slotsVal = 777777;
+          updateOdometer(slotsOdo, slotsVal);
+          
+          setTimeout(() => {
+            btnSpinSlots.disabled = false;
+            btnSpinSlots.textContent = "🎰 Spin / Jackpot";
+            spinTimeout = null;
+          }, 1000);
+        }, 800);
+      });
+
+      // 5. Reset Revenue logic
+      document.getElementById("btn-reset-rev").addEventListener("click", () => {
+        revenueVal = 0.00;
+        updateOdometer(revenueOdo, revenueVal, true);
+      });
+
+      // 6. Copy code logic
+      const btnCopyCode = document.getElementById("btn-copy-code");
+      const codeSnippet = document.getElementById("code-snippet").textContent;
+
+      btnCopyCode.addEventListener("click", () => {
+        navigator.clipboard.writeText(codeSnippet).then(() => {
+          btnCopyCode.textContent = "Copied! ✓";
+          btnCopyCode.style.background = "rgba(34, 197, 94, 0.2)";
+          btnCopyCode.style.borderColor = "rgba(34, 197, 94, 0.4)";
+          btnCopyCode.style.color = "#86efac";
+
+          setTimeout(() => {
+            btnCopyCode.textContent = "Copy Code";
+            btnCopyCode.style.background = "";
+            btnCopyCode.style.borderColor = "";
+            btnCopyCode.style.color = "";
+          }, 2000);
+        });
+      });
+    });
+  </script>
+</body>
+</html>

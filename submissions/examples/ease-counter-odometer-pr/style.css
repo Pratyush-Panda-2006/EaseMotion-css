@@ -1,0 +1,464 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap');
+
+/* ============================================================
+   EaseMotion CSS — ease-counter-odometer Style Sheet
+   ============================================================ */
+
+/* ── Odometer Core Components ────────────────────────────── */
+
+.ease-counter-odometer {
+  display: inline-flex;
+  align-items: center;
+  font-family: 'JetBrains Mono', monospace; /* Monospace guarantees equal digit widths */
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+  user-select: none;
+}
+
+/* Container for each rolling digit */
+.ease-odometer-column {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  height: 1em; /* Bound to line-height */
+  line-height: 1;
+}
+
+/* Vertical reel of digits from 0 to 9 */
+.ease-odometer-reel {
+  display: flex;
+  flex-direction: column;
+  transition: transform var(--ease-odometer-duration, var(--ease-speed-slow, 600ms)) 
+              var(--ease-odometer-timing, var(--ease-ease-bounce, cubic-bezier(0.34, 1.56, 0.64, 1)));
+  transform: translateY(calc(-10% * var(--ease-odometer-digit, 0)));
+}
+
+.ease-odometer-reel span {
+  display: block;
+  height: 1em;
+  text-align: center;
+}
+
+/* Separator symbols (commas, decimals, symbols) */
+.ease-odometer-separator {
+  display: inline-block;
+  height: 1em;
+  line-height: 1;
+  text-align: center;
+  opacity: 0.85;
+}
+
+/* ── Speed Variants ───────────────────────────────────────── */
+
+.ease-odometer-fast {
+  --ease-odometer-duration: var(--ease-speed-fast, 150ms);
+}
+
+.ease-odometer-medium {
+  --ease-odometer-duration: var(--ease-speed-medium, 300ms);
+}
+
+.ease-odometer-slow {
+  --ease-odometer-duration: var(--ease-speed-slow, 600ms);
+}
+
+/* ── Accessibility (Reduced Motion) ────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .ease-odometer-reel {
+    transition: none !important;
+  }
+}
+
+/* ============================================================
+   Demo Playground Styles
+   ============================================================ */
+
+:root {
+  --bg-dark: #070913;
+  --card-bg: rgba(15, 23, 42, 0.6);
+  --border-glow: rgba(108, 99, 255, 0.2);
+  --accent-g-start: #6c63ff;
+  --accent-g-end: #8b5cf6;
+}
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background-color: var(--bg-dark);
+  background-image: 
+    radial-gradient(at 10% 10%, rgba(108, 99, 255, 0.1) 0px, transparent 50%),
+    radial-gradient(at 90% 90%, rgba(139, 92, 246, 0.1) 0px, transparent 50%);
+  color: #f1f5f9;
+  min-height: 100vh;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 1rem;
+  box-sizing: border-box;
+}
+
+.playground-container {
+  width: 100%;
+  max-width: 900px;
+  background: var(--card-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  padding: 3rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5),
+              0 0 40px rgba(108, 99, 255, 0.1);
+  box-sizing: border-box;
+}
+
+/* Title & Subtitle */
+.header {
+  text-align: center;
+  margin-bottom: 3.5rem;
+}
+
+.badge-tag {
+  background: rgba(108, 99, 255, 0.15);
+  border: 1px solid rgba(108, 99, 255, 0.3);
+  color: #a5b4fc;
+  padding: 0.35rem 0.85rem;
+  border-radius: 9999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  display: inline-block;
+  margin-bottom: 1rem;
+}
+
+h1 {
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 800;
+  margin: 0 0 0.75rem 0;
+  background: linear-gradient(135deg, #ffffff 30%, #a5b4fc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  color: #94a3b8;
+  font-size: 1.1rem;
+  margin: 0;
+  font-weight: 400;
+}
+
+/* Showcase Section */
+.counter-showcase {
+  background: rgba(8, 12, 28, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  border-radius: 20px;
+  padding: 2.5rem;
+  margin-bottom: 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.counter-showcase::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, var(--accent-g-start), var(--accent-g-end));
+}
+
+.showcase-label {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #64748b;
+  font-weight: 600;
+}
+
+/* Main animated odometer element on demo page */
+.main-odometer {
+  font-size: clamp(3rem, 8vw, 5rem);
+  font-weight: 700;
+  color: #ffffff;
+  text-shadow: 0 0 25px rgba(108, 99, 255, 0.35);
+  letter-spacing: -0.01em;
+}
+
+/* Controllers */
+.controls-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-bottom: 3.5rem;
+}
+
+.button-group {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.btn {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #e2e8f0;
+  padding: 0.85rem 1.75rem;
+  border-radius: 12px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent-g-start), var(--accent-g-end));
+  border: none;
+  color: white;
+  box-shadow: 0 10px 20px -10px rgba(108, 99, 255, 0.5);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #7c75ff, #9a73f8);
+  box-shadow: 0 12px 24px -8px rgba(108, 99, 255, 0.65);
+}
+
+.btn-danger {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #fca5a5;
+}
+
+.btn-danger:hover {
+  background: rgba(239, 68, 68, 0.25);
+  border-color: rgba(239, 68, 68, 0.4);
+}
+
+.btn-active-sim {
+  border-color: #22c55e;
+  color: #86efac;
+  background: rgba(34, 197, 94, 0.1);
+  animation: pulse-border 2s infinite;
+}
+
+@keyframes pulse-border {
+  0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4); }
+  70% { box-shadow: 0 0 0 8px rgba(34, 197, 94, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+}
+
+/* Speed Selector Panel */
+.speed-control {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.speed-label {
+  font-size: 0.95rem;
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+.speed-options {
+  display: flex;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 0.3rem;
+  border-radius: 12px;
+  gap: 0.25rem;
+}
+
+.speed-opt {
+  background: transparent;
+  border: none;
+  color: #64748b;
+  padding: 0.5rem 1.25rem;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.speed-opt:hover {
+  color: #cbd5e1;
+}
+
+.speed-opt.active {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+}
+
+/* Extra stats boxes */
+.additional-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 3.5rem;
+}
+
+.stat-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  transition: border-color 0.3s ease;
+}
+
+.stat-card:hover {
+  border-color: rgba(108, 99, 255, 0.2);
+}
+
+.stat-header {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.stat-val-wrapper {
+  display: flex;
+  align-items: baseline;
+  gap: 0.25rem;
+}
+
+.stat-val-prefix {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #a5b4fc;
+}
+
+.stat-odometer {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.stat-desc {
+  font-size: 0.85rem;
+  color: #475569;
+}
+
+/* Instructions Codeblock */
+.code-section {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 3rem;
+}
+
+.code-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.code-box-wrapper {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  margin-bottom: 1.5rem;
+}
+
+pre {
+  margin: 0;
+  padding: 1.5rem;
+  background: #04060d;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  overflow-x: auto;
+}
+
+code {
+  color: #a5b4fc;
+}
+
+.code-copy-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #94a3b8;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.8rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s ease;
+}
+
+.code-copy-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+}
+
+/* Key Features Lists */
+.features-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.feature-item {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+}
+
+.feature-icon {
+  color: #818cf8;
+  flex-shrink: 0;
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.feature-text h4 {
+  margin: 0 0 0.25rem 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #e2e8f0;
+}
+
+.feature-text p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #64748b;
+  line-height: 1.4;
+}

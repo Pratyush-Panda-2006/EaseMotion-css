@@ -1,0 +1,95 @@
+/* ==========================================================================
+   EaseMotion CSS — Animated Flip Out Y
+   Component: ease-flip-out-y
+   Contributor: Pratyush-Panda-2006 (pr)
+   Description: Exit transitions where an element flips out of view rotating around
+                the vertical (Y) axis. Requires perspective on parent.
+                Ideal for sidebar dismissals, card flips, panel closures, 
+                and lateral grid animation exits.
+                Zero JavaScript for the core animation.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Parent Container Context: .ease-3d-parent
+   -------------------------------------------------------------------------- */
+.ease-3d-parent {
+  perspective: var(--ease-perspective, 1000px);
+  transform-style: preserve-3d;
+}
+
+/* --------------------------------------------------------------------------
+   Keyframes
+   -------------------------------------------------------------------------- */
+@keyframes ease-flip-out-y-kf {
+  0% {
+    opacity: 1;
+    transform: rotateY(0deg);
+  }
+  100% {
+    opacity: 0;
+    transform: rotateY(var(--ease-flip-angle, 90deg));
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Base Class: .ease-flip-out-y
+   -------------------------------------------------------------------------- */
+.ease-flip-out-y {
+  /* Default configurable tokens */
+  --ease-flip-angle: 90deg;
+  --ease-flip-duration: 0.4s;
+  --ease-flip-easing: cubic-bezier(0.4, 0, 1, 1); /* Standard ease-in timing */
+
+  animation: ease-flip-out-y-kf var(--ease-flip-duration)
+    var(--ease-flip-easing) forwards;
+  transform-origin: center;
+  backface-visibility: visible;
+}
+
+/* --------------------------------------------------------------------------
+   Speed Variants
+   -------------------------------------------------------------------------- */
+.exit-fast {
+  --ease-flip-duration: 0.25s;
+}
+
+.exit-slow {
+  --ease-flip-duration: 0.8s;
+}
+
+/* --------------------------------------------------------------------------
+   Angle Modifiers
+   -------------------------------------------------------------------------- */
+/* Reverse direction flip (flips to -90deg instead of 90deg) */
+.exit-angle-reverse {
+  --ease-flip-angle: -90deg;
+}
+
+/* Shallow ending angle (subtle flip ending at 45deg) */
+.exit-angle-shallow {
+  --ease-flip-angle: 45deg;
+}
+
+/* --------------------------------------------------------------------------
+   Transform Origin Modifiers
+   -------------------------------------------------------------------------- */
+/* Flips left/right relative to the left edge */
+.exit-origin-left {
+  transform-origin: left;
+}
+
+/* Flips right/left relative to the right edge */
+.exit-origin-right {
+  transform-origin: right;
+}
+
+/* --------------------------------------------------------------------------
+   Accessibility - Respect user preferences for reduced motion
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .ease-flip-out-y {
+    animation: none;
+    transform: none;
+    opacity: 0;
+  }
+}

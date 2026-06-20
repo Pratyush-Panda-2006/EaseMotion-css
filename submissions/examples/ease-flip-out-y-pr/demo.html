@@ -1,0 +1,652 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ease-flip-out-y - EaseMotion CSS Demo</title>
+    <!-- Link to the component's stylesheet -->
+    <link rel="stylesheet" href="style.css" />
+
+    <style>
+      /* Premium Dark Theme Styles */
+      :root {
+        --bg-dark: #070913;
+        --bg-card: rgba(255, 255, 255, 0.03);
+        --border-dark: rgba(255, 255, 255, 0.08);
+        --text-main: #f8fafc;
+        --text-muted: #64748b;
+        --primary: #ec4899;
+        --primary-glow: rgba(236, 72, 153, 0.15);
+        --secondary: #db2777;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        background-color: var(--bg-dark);
+        background-image:
+          radial-gradient(
+            circle at 10% 20%,
+            rgba(236, 72, 153, 0.06) 0%,
+            transparent 45%
+          ),
+          radial-gradient(
+            circle at 90% 80%,
+            rgba(6, 182, 212, 0.03) 0%,
+            transparent 45%
+          );
+        color: var(--text-main);
+        font-family:
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          Roboto,
+          sans-serif;
+        min-height: 100vh;
+        padding: 4rem 2rem;
+        line-height: 1.5;
+        overflow-x: hidden;
+      }
+
+      .container {
+        max-width: 1000px;
+        margin: 0 auto;
+      }
+
+      header {
+        text-align: center;
+        margin-bottom: 4rem;
+      }
+
+      .badge {
+        display: inline-block;
+        padding: 0.3rem 0.8rem;
+        border-radius: 9999px;
+        background: var(--primary-glow);
+        border: 1px solid rgba(236, 72, 153, 0.4);
+        color: #fbcfe8;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        margin-bottom: 1rem;
+      }
+
+      h1 {
+        font-size: 2.75rem;
+        font-weight: 850;
+        letter-spacing: -0.03em;
+        background: linear-gradient(135deg, #fff 40%, #ec4899 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 0.75rem;
+      }
+
+      header p {
+        color: var(--text-muted);
+        font-size: 1.05rem;
+        max-width: 650px;
+        margin: 0 auto;
+      }
+
+      /* Sections */
+      section {
+        margin-bottom: 5rem;
+      }
+
+      .section-title {
+        font-size: 1.35rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--text-muted);
+        margin-bottom: 2rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .section-title::after {
+        content: "";
+        flex-grow: 1;
+        height: 1px;
+        background: var(--border-dark);
+      }
+
+      /* Sandbox Panel Layout */
+      .sandbox-layout {
+        display: grid;
+        grid-template-columns: 1.1fr 1.9fr;
+        gap: 3rem;
+        align-items: start;
+      }
+
+      @media (max-width: 768px) {
+        .sandbox-layout {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .controls-panel {
+        background: rgba(10, 13, 28, 0.75);
+        border: 1px solid var(--border-dark);
+        border-radius: 20px;
+        padding: 2rem;
+        backdrop-filter: blur(8px);
+      }
+
+      .control-group {
+        margin-bottom: 1.5rem;
+      }
+
+      .control-group:last-child {
+        margin-bottom: 0;
+      }
+
+      .control-label {
+        display: block;
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--text-muted);
+        margin-bottom: 0.6rem;
+      }
+
+      .btn-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(75px, 1fr));
+        gap: 0.4rem;
+      }
+
+      .btn-select {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--border-dark);
+        color: var(--text-main);
+        padding: 0.55rem;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        cursor: pointer;
+        font-weight: 500;
+        transition: all 0.2s ease;
+        text-align: center;
+      }
+
+      .btn-select:hover {
+        background: rgba(255, 255, 255, 0.07);
+      }
+
+      .btn-select.active {
+        background: var(--primary-glow);
+        border-color: var(--primary);
+        color: #fbcfe8;
+        font-weight: 600;
+      }
+
+      /* Action Trigger Button */
+      .btn-trigger {
+        display: block;
+        width: 100%;
+        background: var(--primary);
+        color: white;
+        border: none;
+        padding: 0.8rem;
+        border-radius: 10px;
+        font-size: 0.95rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        box-shadow: 0 4px 14px var(--primary-glow);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+
+      .btn-trigger:hover {
+        background: var(--secondary);
+        transform: translateY(-1px);
+        box-shadow: 0 6px 18px rgba(236, 72, 153, 0.25);
+      }
+
+      .btn-trigger:active {
+        transform: translateY(0);
+      }
+
+      /* Preview Panel */
+      .preview-panel {
+        background: radial-gradient(
+          circle,
+          rgba(15, 23, 42, 0.3) 0%,
+          rgba(5, 6, 12, 0.7) 100%
+        );
+        border: 1px dashed rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        min-height: 380px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+        position: relative;
+      }
+
+      .preview-card {
+        width: 300px;
+        padding: 2rem;
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 16px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(10px);
+      }
+
+      .card-icon {
+        width: 48px;
+        height: 48px;
+        background: var(--primary-glow);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #ec4899;
+        margin-bottom: 1.25rem;
+        font-size: 1.5rem;
+      }
+
+      .preview-card h3 {
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+      }
+
+      .preview-card p {
+        font-size: 0.9rem;
+        color: var(--text-muted);
+        line-height: 1.6;
+      }
+
+      .code-box {
+        margin-top: 2rem;
+        font-family: monospace;
+        font-size: 0.85rem;
+        background: #04050b;
+        padding: 0.8rem 1.2rem;
+        border-radius: 10px;
+        border: 1px solid var(--border-dark);
+        color: #fbcfe8;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .code-box span {
+        color: var(--text-main);
+        user-select: all;
+      }
+
+      /* Showcase Grid & Elements */
+      .demo-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 2.5rem;
+      }
+
+      .demo-showcase-panel {
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid var(--border-dark);
+        border-radius: 20px;
+        padding: 2.2rem;
+        position: relative;
+        min-height: 350px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        overflow: hidden;
+      }
+
+      /* App 1: Interactive Sidebar mock */
+      .sidebar-showcase {
+        position: relative;
+        height: 180px;
+        background: rgba(255, 255, 255, 0.01);
+        border: 1px solid rgba(255, 255, 255, 0.04);
+        border-radius: 12px;
+        overflow: hidden;
+        margin-top: 1rem;
+      }
+
+      .sidebar-panel {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 140px;
+        height: 100%;
+        background: #0f111e;
+        border-left: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 1.2rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+      }
+
+      .sidebar-item-mock {
+        height: 12px;
+        border-radius: 4px;
+        background: rgba(255, 255, 255, 0.05);
+      }
+
+      .sidebar-item-mock:nth-child(2) {
+        width: 70%;
+        background: rgba(236, 72, 153, 0.2);
+      }
+
+      .sidebar-item-mock:nth-child(3) {
+        width: 85%;
+      }
+
+      /* App 2: Widget grid dismiss */
+      .dash-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-top: 1rem;
+      }
+
+      .dash-widget {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+        padding: 1.2rem;
+        position: relative;
+      }
+
+      .dash-widget-close {
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
+        background: transparent;
+        border: none;
+        color: var(--text-muted);
+        cursor: pointer;
+        font-size: 1.2rem;
+        line-height: 1;
+      }
+
+      .dash-widget-close:hover {
+        color: var(--primary);
+      }
+
+      .dash-label {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        letter-spacing: 0.05em;
+      }
+
+      .dash-val {
+        font-size: 1.5rem;
+        font-weight: 750;
+        margin-top: 0.25rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <span class="badge">Component Submission</span>
+        <h1>ease-flip-out-y</h1>
+        <p>
+          Standard 3D exit animation that flips elements out of view by rotating them around the vertical (Y) axis. Excellent for lateral slide-outs and panels.
+        </p>
+      </header>
+
+      <!-- SECTION 1: INTERACTIVE SANDBOX -->
+      <section>
+        <h2 class="section-title">Interactive Sandbox</h2>
+        <div class="sandbox-layout">
+          <div class="controls-panel">
+            <!-- Speed Control -->
+            <div class="control-group">
+              <span class="control-label">Speed Variant</span>
+              <div class="btn-grid">
+                <button class="btn-select btn-speed" data-class="exit-fast">
+                  Fast
+                </button>
+                <button class="btn-select btn-speed active" data-class="">
+                  Default
+                </button>
+                <button class="btn-select btn-speed" data-class="exit-slow">
+                  Slow
+                </button>
+              </div>
+            </div>
+
+            <!-- Angle Control -->
+            <div class="control-group">
+              <span class="control-label">Angle Modifier</span>
+              <div class="btn-grid">
+                <button class="btn-select btn-angle active" data-class="">
+                  90°
+                </button>
+                <button class="btn-select btn-angle" data-class="exit-angle-reverse">
+                  -90°
+                </button>
+                <button class="btn-select btn-angle" data-class="exit-angle-shallow">
+                  45°
+                </button>
+              </div>
+            </div>
+
+            <!-- Origin Control -->
+            <div class="control-group">
+              <span class="control-label">Transform Origin</span>
+              <div class="btn-grid">
+                <button class="btn-select btn-origin active" data-class="">
+                  Center
+                </button>
+                <button class="btn-select btn-origin" data-class="exit-origin-left">
+                  Left Edge
+                </button>
+                <button class="btn-select btn-origin" data-class="exit-origin-right">
+                  Right Edge
+                </button>
+              </div>
+            </div>
+
+            <!-- Trigger Buttons -->
+            <button id="btn-exit" class="btn-trigger">Trigger Exit</button>
+            <button
+              id="btn-reset"
+              class="btn-select"
+              style="margin-top: 0.6rem; width: 100%; font-weight: 700"
+            >
+              Reset Sandbox
+            </button>
+          </div>
+
+          <!-- Preview Panel -->
+          <div class="preview-panel ease-3d-parent">
+            <div id="sandbox-card" class="preview-card">
+              <div class="card-icon">🎭</div>
+              <h3>3D Flip Card</h3>
+              <p>
+                Press "Trigger Exit" to see this card flip away rotating around the vertical axis.
+                Press "Reset" to bring it back.
+              </p>
+            </div>
+
+            <div class="code-box">
+              Class:
+              <span id="class-code">&lt;div class="preview-card"&gt;</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 2: COMMON APPLICATIONS -->
+      <section>
+        <h2 class="section-title">Common Layout Applications</h2>
+        <div class="demo-grid">
+          <!-- App 1: Sidebar Dismissal -->
+          <div class="demo-showcase-panel">
+            <div>
+              <h3>Sidebar Dismissal</h3>
+              <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem; margin-bottom: 1rem;">
+                Toggling a sidebar panel out of view relative to the right edge origin for a realistic panel reveal and close transition.
+              </p>
+
+              <button id="btn-toggle-sidebar" class="btn-select" style="background: var(--primary); border: none; color: white; font-weight: 600; width: 100%;">
+                Toggle Sidebar
+              </button>
+
+              <div class="sidebar-showcase ease-3d-parent">
+                <div id="sidebar-panel" class="sidebar-panel">
+                  <div class="sidebar-item-mock"></div>
+                  <div class="sidebar-item-mock"></div>
+                  <div class="sidebar-item-mock"></div>
+                </div>
+              </div>
+            </div>
+            <div style="font-size: 0.75rem; color: var(--text-muted); border-top: 1px solid var(--border-dark); padding-top: 0.75rem; margin-top: 1rem;">
+              Close uses: <code>.ease-flip-out-y.exit-origin-right</code>
+            </div>
+          </div>
+
+          <!-- App 2: Widget Grid Dismissal -->
+          <div class="demo-showcase-panel">
+            <div>
+              <h3>Dashboard Widget Dismissal</h3>
+              <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem; margin-bottom: 1rem;">
+                Dismissing dashboard modules gracefully by flipping them away along the Y axis.
+              </p>
+
+              <button id="btn-restore-widgets" class="btn-select" style="width: 100%; margin-bottom: 1rem; display: none;">
+                Restore All Widgets
+              </button>
+
+              <div class="dash-grid ease-3d-parent">
+                <div class="dash-widget" id="widget-1">
+                  <button class="dash-widget-close" onclick="closeWidget('widget-1')">×</button>
+                  <div class="dash-label">Orders</div>
+                  <div class="dash-val">839</div>
+                </div>
+                <div class="dash-widget" id="widget-2">
+                  <button class="dash-widget-close" onclick="closeWidget('widget-2')">×</button>
+                  <div class="dash-label">Revenue</div>
+                  <div class="dash-val">$45,280</div>
+                </div>
+              </div>
+            </div>
+            <div style="font-size: 0.75rem; color: var(--text-muted); border-top: 1px solid var(--border-dark); padding-top: 0.75rem; margin-top: 1rem;">
+              Dismissal uses: <code>.ease-flip-out-y.exit-fast</code>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const card = document.getElementById("sandbox-card");
+        const exitBtn = document.getElementById("btn-exit");
+        const resetBtn = document.getElementById("btn-reset");
+        const classCode = document.getElementById("class-code");
+
+        // Sandbox state
+        const state = {
+          speed: "",
+          angle: "",
+          origin: ""
+        };
+
+        // Handler for Speed Selection
+        document.querySelectorAll(".btn-speed").forEach((btn) => {
+          btn.addEventListener("click", (e) => {
+            document.querySelectorAll(".btn-speed").forEach((b) => b.classList.remove("active"));
+            e.target.classList.add("active");
+            state.speed = e.target.getAttribute("data-class");
+          });
+        });
+
+        // Handler for Angle Selection
+        document.querySelectorAll(".btn-angle").forEach((btn) => {
+          btn.addEventListener("click", (e) => {
+            document.querySelectorAll(".btn-angle").forEach((b) => b.classList.remove("active"));
+            e.target.classList.add("active");
+            state.angle = e.target.getAttribute("data-class");
+          });
+        });
+
+        // Handler for Origin Selection
+        document.querySelectorAll(".btn-origin").forEach((btn) => {
+          btn.addEventListener("click", (e) => {
+            document.querySelectorAll(".btn-origin").forEach((b) => b.classList.remove("active"));
+            e.target.classList.add("active");
+            state.origin = e.target.getAttribute("data-class");
+          });
+        });
+
+        // Trigger Exit function
+        exitBtn.addEventListener("click", () => {
+          card.className = "preview-card ease-flip-out-y";
+          if (state.speed) card.classList.add(state.speed);
+          if (state.angle) card.classList.add(state.angle);
+          if (state.origin) card.classList.add(state.origin);
+
+          const classNames = Array.from(card.classList).join(" ");
+          classCode.textContent = `<div class="${classNames}">`;
+        });
+
+        // Reset Sandbox
+        resetBtn.addEventListener("click", () => {
+          card.className = "preview-card";
+          classCode.textContent = `<div class="preview-card">`;
+        });
+
+        // --- Sidebar Dismissal ---
+        const toggleSidebarBtn = document.getElementById("btn-toggle-sidebar");
+        const sidebar = document.getElementById("sidebar-panel");
+        let sidebarVisible = true;
+
+        toggleSidebarBtn.addEventListener("click", () => {
+          if (sidebarVisible) {
+            sidebar.className = "sidebar-panel ease-flip-out-y exit-origin-right";
+            setTimeout(() => {
+              sidebar.style.visibility = "hidden";
+            }, 400);
+          } else {
+            sidebar.style.visibility = "visible";
+            sidebar.className = "sidebar-panel";
+          }
+          sidebarVisible = !sidebarVisible;
+        });
+
+        // --- Widget Dismissal ---
+        const restoreBtn = document.getElementById("btn-restore-widgets");
+        const widgets = ["widget-1", "widget-2"];
+
+        window.closeWidget = function(id) {
+          const w = document.getElementById(id);
+          w.className = "dash-widget ease-flip-out-y exit-fast";
+          setTimeout(() => {
+            w.style.visibility = "hidden";
+            restoreBtn.style.display = "block";
+          }, 250);
+        };
+
+        restoreBtn.addEventListener("click", () => {
+          widgets.forEach((id) => {
+            const w = document.getElementById(id);
+            w.style.visibility = "visible";
+            w.className = "dash-widget";
+          });
+          restoreBtn.style.display = "none";
+        });
+      });
+    </script>
+  </body>
+</html>

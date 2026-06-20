@@ -1,0 +1,198 @@
+﻿/* ==========================================================================
+   EaseMotion CSS — Animated Text Split Reveal
+   Component: ease-text-split-reveal
+   Contributor: Pratyush-Panda-2006 (pr)
+   Description: Entrance reveal animation where a cover text splits apart
+                horizontally or vertically and fades out to reveal the actual
+                content directly behind it.
+                Zero JavaScript for the core animation.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Base Class: .ease-text-split-reveal
+   -------------------------------------------------------------------------- */
+.ease-text-split-reveal {
+  position: relative;
+  display: inline-block;
+  cursor: default;
+  /* Configurable CSS custom tokens */
+  --ease-split-distance: 60%;
+  --ease-split-duration: 0.8s;
+  --ease-split-easing: cubic-bezier(0.25, 1, 0.5, 1); /* Smooth ease-out */
+  --ease-reveal-delay: 0.2s;
+  --ease-split-text-color: inherit;
+}
+
+/* Spacer element to define layout dimensions */
+.ease-text-split-reveal .cover-text {
+  visibility: hidden;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* Pseudo-elements containing the cover text split halves */
+.ease-text-split-reveal::before,
+.ease-text-split-reveal::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  white-space: nowrap;
+  color: var(--ease-split-text-color);
+  font-weight: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
+  text-align: inherit;
+  pointer-events: none;
+  z-index: 2;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+}
+
+/* Left Half (Horizontal) */
+.ease-text-split-reveal::before {
+  clip-path: inset(0 50% 0 0);
+  animation: ease-split-left-kf var(--ease-split-duration)
+    var(--ease-split-easing) forwards;
+}
+
+/* Right Half (Horizontal) */
+.ease-text-split-reveal::after {
+  clip-path: inset(0 0 0 50%);
+  animation: ease-split-right-kf var(--ease-split-duration)
+    var(--ease-split-easing) forwards;
+}
+
+/* Content to be revealed behind */
+.ease-text-split-reveal .reveal-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  z-index: 1;
+  transform: scale(0.92);
+  animation: ease-reveal-content-kf var(--ease-split-duration)
+    var(--ease-split-easing) forwards;
+  animation-delay: var(--ease-reveal-delay);
+}
+
+/* --------------------------------------------------------------------------
+   Vertical Split Modifiers
+   -------------------------------------------------------------------------- */
+.reveal-vertical::before {
+  clip-path: inset(0 0 50% 0);
+  animation-name: ease-split-top-kf;
+}
+
+.reveal-vertical::after {
+  clip-path: inset(50% 0 0 0);
+  animation-name: ease-split-bottom-kf;
+}
+
+/* --------------------------------------------------------------------------
+   Speed Modifiers
+   -------------------------------------------------------------------------- */
+.reveal-fast {
+  --ease-split-duration: 0.4s;
+  --ease-reveal-delay: 0.1s;
+}
+
+.reveal-slow {
+  --ease-split-duration: 1.5s;
+  --ease-reveal-delay: 0.4s;
+}
+
+/* --------------------------------------------------------------------------
+   Distance Modifiers
+   -------------------------------------------------------------------------- */
+.reveal-dist-short {
+  --ease-split-distance: 30%;
+}
+
+.reveal-dist-long {
+  --ease-split-distance: 120%;
+}
+
+/* --------------------------------------------------------------------------
+   Keyframe Animations
+   -------------------------------------------------------------------------- */
+@keyframes ease-split-left-kf {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(calc(-1 * var(--ease-split-distance, 60%)));
+    opacity: 0;
+  }
+}
+
+@keyframes ease-split-right-kf {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(var(--ease-split-distance, 60%));
+    opacity: 0;
+  }
+}
+
+@keyframes ease-split-top-kf {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(calc(-1 * var(--ease-split-distance, 60%)));
+    opacity: 0;
+  }
+}
+
+@keyframes ease-split-bottom-kf {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(var(--ease-split-distance, 60%));
+    opacity: 0;
+  }
+}
+
+@keyframes ease-reveal-content-kf {
+  0% {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Accessibility - Reduced Motion Settings
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .ease-text-split-reveal::before,
+  .ease-text-split-reveal::after {
+    animation: none;
+    opacity: 0;
+  }
+
+  .ease-text-split-reveal .reveal-content {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}

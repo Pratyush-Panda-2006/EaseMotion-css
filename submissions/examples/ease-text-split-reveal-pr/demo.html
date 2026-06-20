@@ -1,0 +1,551 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ease-text-split-reveal — EaseMotion CSS Demo</title>
+    <!-- Link to the component's stylesheet -->
+    <link rel="stylesheet" href="style.css" />
+
+    <style>
+      /* Dark Theme Premium Showcase Styles */
+      :root {
+        --bg-dark: #080a16;
+        --bg-card: rgba(255, 255, 255, 0.03);
+        --border-dark: rgba(255, 255, 255, 0.08);
+        --text-main: #f8fafc;
+        --text-muted: #64748b;
+        --primary: #3b82f6;
+        --primary-glow: rgba(59, 130, 246, 0.2);
+        --secondary: #6366f1;
+        --secondary-glow: rgba(99, 102, 241, 0.2);
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        background-color: var(--bg-dark);
+        background-image:
+          radial-gradient(
+            circle at 10% 20%,
+            rgba(59, 130, 246, 0.08) 0%,
+            transparent 45%
+          ),
+          radial-gradient(
+            circle at 90% 80%,
+            rgba(99, 102, 241, 0.06) 0%,
+            transparent 45%
+          );
+        color: var(--text-main);
+        font-family:
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          Roboto,
+          sans-serif;
+        min-height: 100vh;
+        padding: 4rem 2rem;
+        line-height: 1.5;
+        overflow-x: hidden;
+      }
+
+      .container {
+        max-width: 1000px;
+        margin: 0 auto;
+      }
+
+      header {
+        text-align: center;
+        margin-bottom: 4rem;
+      }
+
+      .badge {
+        display: inline-block;
+        padding: 0.3rem 0.8rem;
+        border-radius: 9999px;
+        background: var(--primary-glow);
+        border: 1px solid rgba(59, 130, 246, 0.4);
+        color: #93c5fd;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        margin-bottom: 1rem;
+      }
+
+      h1 {
+        font-size: 2.75rem;
+        font-weight: 850;
+        letter-spacing: -0.03em;
+        background: linear-gradient(135deg, #fff 40%, #3b82f6 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 0.75rem;
+      }
+
+      header p {
+        color: var(--text-muted);
+        font-size: 1.05rem;
+        max-width: 650px;
+        margin: 0 auto;
+      }
+
+      /* Sections */
+      section {
+        margin-bottom: 5rem;
+      }
+
+      .section-title {
+        font-size: 1.35rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--text-muted);
+        margin-bottom: 2rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .section-title::after {
+        content: "";
+        flex-grow: 1;
+        height: 1px;
+        background: var(--border-dark);
+      }
+
+      /* Sandbox Panel Layout */
+      .sandbox-layout {
+        display: grid;
+        grid-template-columns: 1.1fr 1.9fr;
+        gap: 3rem;
+        align-items: start;
+      }
+
+      @media (max-width: 768px) {
+        .sandbox-layout {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .controls-panel {
+        background: rgba(13, 17, 33, 0.75);
+        border: 1px solid var(--border-dark);
+        border-radius: 20px;
+        padding: 2rem;
+        backdrop-filter: blur(8px);
+      }
+
+      .control-group {
+        margin-bottom: 1.5rem;
+      }
+
+      .control-group:last-child {
+        margin-bottom: 0;
+      }
+
+      .control-label {
+        display: block;
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--text-muted);
+        margin-bottom: 0.6rem;
+      }
+
+      .btn-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(75px, 1fr));
+        gap: 0.4rem;
+      }
+
+      .btn-select {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--border-dark);
+        color: var(--text-main);
+        padding: 0.55rem;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        cursor: pointer;
+        font-weight: 500;
+        transition: all 0.2s ease;
+        text-align: center;
+      }
+
+      .btn-select:hover {
+        background: rgba(255, 255, 255, 0.07);
+      }
+
+      .btn-select.active {
+        background: var(--primary-glow);
+        border-color: var(--primary);
+        color: #93c5fd;
+        font-weight: 600;
+      }
+
+      /* Action Trigger Button */
+      .btn-trigger {
+        display: block;
+        width: 100%;
+        background: var(--primary);
+        color: white;
+        border: none;
+        padding: 0.8rem;
+        border-radius: 10px;
+        font-size: 0.95rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        box-shadow: 0 4px 14px var(--primary-glow);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-top: 1.5rem;
+      }
+
+      .btn-trigger:hover {
+        background: #2563eb;
+        transform: translateY(-1px);
+      }
+
+      .preview-panel {
+        background: radial-gradient(
+          circle,
+          rgba(15, 23, 42, 0.4) 0%,
+          rgba(5, 6, 12, 0.8) 100%
+        );
+        border: 1px dashed rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        min-height: 380px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+        position: relative;
+      }
+
+      /* Animation Typography */
+      .sandbox-text {
+        font-size: 2.25rem;
+        font-weight: 900;
+        letter-spacing: -0.02em;
+        text-transform: uppercase;
+      }
+
+      .revealed-logo {
+        background: linear-gradient(135deg, #60a5fa 0%, #a5b4fc 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: 950;
+      }
+
+      .code-box {
+        margin-top: 2rem;
+        font-family: monospace;
+        font-size: 0.85rem;
+        background: #04050b;
+        padding: 0.8rem 1.2rem;
+        border-radius: 10px;
+        border: 1px solid var(--border-dark);
+        color: #93c5fd;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .code-box span {
+        color: var(--text-main);
+        user-select: all;
+      }
+
+      /* Hero Section Demo */
+      .hero-showcase {
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.02) 0%,
+          transparent 100%
+        );
+        border: 1px solid var(--border-dark);
+        border-radius: 24px;
+        padding: 6rem 2rem;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero-title {
+        font-size: 3.25rem;
+        font-weight: 900;
+        text-transform: uppercase;
+        margin-bottom: 1.5rem;
+        line-height: 1.1;
+      }
+
+      .hero-desc {
+        color: var(--text-muted);
+        font-size: 1.15rem;
+        max-width: 600px;
+        margin: 0 auto 2.5rem auto;
+      }
+
+      .hero-btn {
+        background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+        color: white;
+        border: none;
+        padding: 0.9rem 2.2rem;
+        border-radius: 12px;
+        font-weight: 700;
+        font-size: 1rem;
+        cursor: pointer;
+        box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+        transition: all 0.3s ease;
+      }
+
+      .hero-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 15px 30px rgba(59, 130, 246, 0.4);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <span class="badge">Entrance Animation</span>
+        <h1>ease-text-split-reveal</h1>
+        <p>
+          A premium CSS-only reveal animation where cover text splits in half
+          (horizontally or vertically) and fades away, exposing hidden content
+          underneath.
+        </p>
+      </header>
+
+      <!-- SECTION 1: SANDBOX PLAYGROUND -->
+      <section>
+        <h2 class="section-title">Interactive Sandbox</h2>
+        <div class="sandbox-layout">
+          <!-- Controls Panel -->
+          <div class="controls-panel">
+            <!-- Speed Variants -->
+            <div class="control-group">
+              <span class="control-label">Duration & Delay</span>
+              <div class="btn-grid">
+                <button class="btn-select btn-speed active" data-class="">
+                  Normal (0.8s)
+                </button>
+                <button class="btn-select btn-speed" data-class="reveal-fast">
+                  Fast (0.4s)
+                </button>
+                <button class="btn-select btn-speed" data-class="reveal-slow">
+                  Slow (1.5s)
+                </button>
+              </div>
+            </div>
+
+            <!-- Distance Variants -->
+            <div class="control-group">
+              <span class="control-label">Split Distance</span>
+              <div class="btn-grid">
+                <button class="btn-select btn-dist active" data-class="">
+                  Default (60%)
+                </button>
+                <button
+                  class="btn-select btn-dist"
+                  data-class="reveal-dist-short"
+                >
+                  Short (30%)
+                </button>
+                <button
+                  class="btn-select btn-dist"
+                  data-class="reveal-dist-long"
+                >
+                  Long (120%)
+                </button>
+              </div>
+            </div>
+
+            <!-- Orientation Toggles -->
+            <div class="control-group">
+              <span class="control-label">Split Orientation</span>
+              <div class="btn-grid">
+                <button class="btn-select btn-orient active" data-class="">
+                  Horizontal
+                </button>
+                <button
+                  class="btn-select btn-orient"
+                  data-class="reveal-vertical"
+                >
+                  Vertical
+                </button>
+              </div>
+            </div>
+
+            <!-- Action buttons -->
+            <button id="btn-trigger" class="btn-trigger">Trigger Reveal</button>
+            <button
+              id="btn-reset"
+              class="btn-select"
+              style="margin-top: 0.6rem; width: 100%; font-weight: 700"
+            >
+              Reset Sandbox
+            </button>
+          </div>
+
+          <!-- Preview Panel -->
+          <div class="preview-panel">
+            <div
+              id="sandbox-reveal"
+              class="sandbox-text"
+              data-text="HOVER OR TRIGGER"
+            >
+              <span class="cover-text" style="visibility: hidden"
+                >HOVER OR TRIGGER</span
+              >
+              <div class="reveal-content">
+                <span class="revealed-logo">CREATIVE ART</span>
+              </div>
+            </div>
+
+            <div class="code-box">
+              Class:
+              <span id="class-code"
+                >&lt;div class="ease-text-split-reveal"&gt;</span
+              >
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 2: HERO LAYOUT SHOWCASE -->
+      <section>
+        <h2 class="section-title">Real World Hero Showcase</h2>
+        <div class="hero-showcase">
+          <div
+            id="hero-reveal-block"
+            class="hero-title"
+            data-text="INITIAL COVER TEXT"
+          >
+            <span class="cover-text" style="visibility: hidden"
+              >INITIAL COVER TEXT</span
+            >
+            <div class="reveal-content">
+              <span
+                style="
+                  background: linear-gradient(135deg, #a5b4fc 0%, #3b82f6 100%);
+                  -webkit-background-clip: text;
+                  -webkit-text-fill-color: transparent;
+                "
+                >REVEALED TITLE</span
+              >
+            </div>
+          </div>
+
+          <p class="hero-desc">
+            This premium landing layout leverages pure CSS transitions to
+            trigger split text reveals, creating instant dramatic hooks for
+            incoming visitors.
+          </p>
+
+          <button id="btn-hero-toggle" class="hero-btn">
+            Trigger Showcase
+          </button>
+        </div>
+      </section>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const sandbox = document.getElementById("sandbox-reveal");
+        const triggerBtn = document.getElementById("btn-trigger");
+        const resetBtn = document.getElementById("btn-reset");
+        const classCode = document.getElementById("class-code");
+
+        // Sandbox states
+        const state = {
+          speed: "",
+          dist: "",
+          orient: "",
+        };
+
+        // Handler for Speed
+        document.querySelectorAll(".btn-speed").forEach((btn) => {
+          btn.addEventListener("click", (e) => {
+            document
+              .querySelectorAll(".btn-speed")
+              .forEach((b) => b.classList.remove("active"));
+            e.target.classList.add("active");
+            state.speed = e.target.getAttribute("data-class");
+          });
+        });
+
+        // Handler for Distance
+        document.querySelectorAll(".btn-dist").forEach((btn) => {
+          btn.addEventListener("click", (e) => {
+            document
+              .querySelectorAll(".btn-dist")
+              .forEach((b) => b.classList.remove("active"));
+            e.target.classList.add("active");
+            state.dist = e.target.getAttribute("data-class");
+          });
+        });
+
+        // Handler for Orientation
+        document.querySelectorAll(".btn-orient").forEach((btn) => {
+          btn.addEventListener("click", (e) => {
+            document
+              .querySelectorAll(".btn-orient")
+              .forEach((b) => b.classList.remove("active"));
+            e.target.classList.add("active");
+            state.orient = e.target.getAttribute("data-class");
+          });
+        });
+
+        // Trigger action
+        triggerBtn.addEventListener("click", () => {
+          // Remove classes to re-trigger animation layout
+          sandbox.className = "sandbox-text";
+          void sandbox.offsetWidth; // Force reflow
+
+          sandbox.className = "sandbox-text ease-text-split-reveal";
+          if (state.speed) sandbox.classList.add(state.speed);
+          if (state.dist) sandbox.classList.add(state.dist);
+          if (state.orient) sandbox.classList.add(state.orient);
+
+          const classNames = Array.from(sandbox.classList).join(" ");
+          classCode.textContent = `<div class="${classNames}">`;
+        });
+
+        // Reset sandbox
+        resetBtn.addEventListener("click", () => {
+          sandbox.className = "sandbox-text";
+          classCode.textContent = `<div class="sandbox-text">`;
+        });
+
+        // --- Hero Showcase Controls ---
+        const heroToggle = document.getElementById("btn-hero-toggle");
+        const heroBlock = document.getElementById("hero-reveal-block");
+        let heroActive = false;
+
+        heroToggle.addEventListener("click", () => {
+          if (heroActive) {
+            heroBlock.className = "hero-title";
+            heroToggle.textContent = "Trigger Showcase";
+          } else {
+            // Re-trigger layout
+            heroBlock.className = "hero-title";
+            void heroBlock.offsetWidth;
+            heroBlock.className =
+              "hero-title ease-text-split-reveal reveal-vertical reveal-dist-long";
+            heroToggle.textContent = "Reset Showcase";
+          }
+          heroActive = !heroActive;
+        });
+      });
+    </script>
+  </body>
+</html>

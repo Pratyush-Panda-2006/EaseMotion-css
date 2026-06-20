@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ease-ingredient-checklist-fill — EaseMotion CSS</title>
+
+    <!-- Link to EaseMotion CSS core -->
+    <link rel="stylesheet" href="../../../core/animations.css" />
+    <!-- Link to style.css -->
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header class="hero">
+        <span class="badge">Cooking Animation Pack</span>
+        <h1>ease-ingredient-checklist-fill</h1>
+        <p class="subtitle">
+          An interactive recipe ingredient checklist featuring custom checkmark
+          drawing animations, satisfying checkbox bounces, and elegant
+          item-dimming transitions.
+        </p>
+      </header>
+
+      <div class="recipe-layout">
+        <!-- Left side: Recipe Metadata -->
+        <aside class="recipe-info-card">
+          <div class="recipe-meta-cover">
+            <span class="recipe-meta-badge">Featured Recipe</span>
+          </div>
+          <div class="recipe-meta-content">
+            <h2>Spaghetti Carbonara</h2>
+            <p class="recipe-meta-desc">
+              A classic Roman pasta dish made with eggs, hard cheese, cured
+              pork, and black pepper.
+            </p>
+
+            <div class="meta-specs">
+              <div class="spec-item">
+                <span class="spec-value">20m</span>
+                <span class="spec-label">Prep Time</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-value">4</span>
+                <span class="spec-label">Servings</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-value">680</span>
+                <span class="spec-label">Kcal / Port.</span>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+        <!-- Right side: Ingredients Checklist -->
+        <main class="checklist-card">
+          <div class="checklist-header">
+            <div class="progress-info">
+              <h2>Ingredients Checklist</h2>
+              <span class="progress-count" id="progressCount"
+                >0 / 6 prepared</span
+              >
+            </div>
+            <!-- Linear progress bar -->
+            <div class="progress-bar-container">
+              <div
+                class="progress-bar-fill"
+                id="progressBarFill"
+                style="width: 0%"
+              ></div>
+            </div>
+          </div>
+
+          <div class="ease-ingredient-checklist">
+            <!-- Item 1 -->
+            <label class="ease-ingredient-item">
+              <input type="checkbox" class="ease-ingredient-checkbox" />
+              <span class="ease-checkbox-custom">
+                <svg class="checkmark-svg" viewBox="0 0 24 24">
+                  <polyline
+                    points="20 6 9 17 4 12"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="3"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+              <span class="ease-ingredient-text">
+                <span class="ingredient-amount">200g</span>
+                <span class="ingredient-name">Bronze-cut Spaghetti</span>
+              </span>
+            </label>
+
+            <!-- Item 2 -->
+            <label class="ease-ingredient-item">
+              <input type="checkbox" class="ease-ingredient-checkbox" />
+              <span class="ease-checkbox-custom">
+                <svg class="checkmark-svg" viewBox="0 0 24 24">
+                  <polyline
+                    points="20 6 9 17 4 12"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="3"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+              <span class="ease-ingredient-text">
+                <span class="ingredient-amount">150g</span>
+                <span class="ingredient-name"
+                  >Guanciale (cured pork jowl), cubed</span
+                >
+              </span>
+            </label>
+
+            <!-- Item 3 -->
+            <label class="ease-ingredient-item">
+              <input type="checkbox" class="ease-ingredient-checkbox" />
+              <span class="ease-checkbox-custom">
+                <svg class="checkmark-svg" viewBox="0 0 24 24">
+                  <polyline
+                    points="20 6 9 17 4 12"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="3"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+              <span class="ease-ingredient-text">
+                <span class="ingredient-amount">4 large</span>
+                <span class="ingredient-name">Fresh Farm Egg Yolks</span>
+              </span>
+            </label>
+
+            <!-- Item 4 -->
+            <label class="ease-ingredient-item">
+              <input type="checkbox" class="ease-ingredient-checkbox" />
+              <span class="ease-checkbox-custom">
+                <svg class="checkmark-svg" viewBox="0 0 24 24">
+                  <polyline
+                    points="20 6 9 17 4 12"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="3"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+              <span class="ease-ingredient-text">
+                <span class="ingredient-amount">75g</span>
+                <span class="ingredient-name"
+                  >Pecorino Romano Cheese, grated</span
+                >
+              </span>
+            </label>
+
+            <!-- Item 5 -->
+            <label class="ease-ingredient-item">
+              <input type="checkbox" class="ease-ingredient-checkbox" />
+              <span class="ease-checkbox-custom">
+                <svg class="checkmark-svg" viewBox="0 0 24 24">
+                  <polyline
+                    points="20 6 9 17 4 12"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="3"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+              <span class="ease-ingredient-text">
+                <span class="ingredient-amount">1 tbsp</span>
+                <span class="ingredient-name"
+                  >Whole Black Peppercorns, crushed</span
+                >
+              </span>
+            </label>
+
+            <!-- Item 6 -->
+            <label class="ease-ingredient-item">
+              <input type="checkbox" class="ease-ingredient-checkbox" />
+              <span class="ease-checkbox-custom">
+                <svg class="checkmark-svg" viewBox="0 0 24 24">
+                  <polyline
+                    points="20 6 9 17 4 12"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="3"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+              <span class="ease-ingredient-text">
+                <span class="ingredient-amount">Pinch</span>
+                <span class="ingredient-name">Fine Sea Salt</span>
+              </span>
+            </label>
+          </div>
+
+          <div class="checklist-actions">
+            <button class="action-btn select-all-btn" id="selectAllBtn">
+              Select All
+            </button>
+            <button class="action-btn clear-all-btn" id="clearAllBtn">
+              Clear All
+            </button>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <script>
+      const checkboxes = document.querySelectorAll(".ease-ingredient-checkbox");
+      const progressBarFill = document.getElementById("progressBarFill");
+      const progressCount = document.getElementById("progressCount");
+      const selectAllBtn = document.getElementById("selectAllBtn");
+      const clearAllBtn = document.getElementById("clearAllBtn");
+
+      function updateProgress() {
+        const total = checkboxes.length;
+        const checked = document.querySelectorAll(
+          ".ease-ingredient-checkbox:checked"
+        ).length;
+        const percentage = (checked / total) * 100;
+
+        progressBarFill.style.width = `${percentage}%`;
+        progressCount.textContent = `${checked} / ${total} prepared`;
+
+        if (checked === total) {
+          progressCount.classList.add("completed");
+        } else {
+          progressCount.classList.remove("completed");
+        }
+      }
+
+      checkboxes.forEach((checkbox) => {
+        checkbox.addEventListener("change", updateProgress);
+      });
+
+      selectAllBtn.addEventListener("click", () => {
+        checkboxes.forEach((c) => (c.checked = true));
+        updateProgress();
+      });
+
+      clearAllBtn.addEventListener("click", () => {
+        checkboxes.forEach((c) => (c.checked = false));
+        updateProgress();
+      });
+
+      // Initialize progress bar
+      updateProgress();
+    </script>
+  </body>
+</html>

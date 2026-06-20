@@ -1,0 +1,428 @@
+/* ==========================================================================
+   EaseMotion CSS — ease-ingredient-checklist-fill-pp
+   Ingredients list checklist with checkmark drawing and item dimming
+   Issue #14037
+   ========================================================================== */
+
+/* Modern CSS Reset & Basics */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    sans-serif;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #090e11 0%, #0d1519 100%);
+  color: #f1f5f9;
+  padding: 3rem 1.5rem;
+  line-height: 1.5;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* Header Section */
+.hero {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: rgba(16, 185, 129, 0.1);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  margin-bottom: 1rem;
+}
+
+.hero h1 {
+  font-size: 3rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 1rem;
+}
+
+.subtitle {
+  font-size: 1.125rem;
+  color: #94a3b8;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Layout Grid */
+.recipe-layout {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+/* Left Sidebar Card */
+.recipe-info-card {
+  background: rgba(15, 23, 42, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(20px);
+}
+
+.recipe-meta-cover {
+  height: 180px;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(16, 185, 129, 0.15) 0%,
+      rgba(6, 78, 59, 0.4) 100%
+    ),
+    radial-gradient(
+      circle at top left,
+      rgba(52, 211, 153, 0.2),
+      transparent 70%
+    );
+  padding: 1.5rem;
+  display: flex;
+  align-items: flex-start;
+}
+
+.recipe-meta-badge {
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(4px);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.recipe-meta-content {
+  padding: 2rem 1.5rem;
+}
+
+.recipe-meta-content h2 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #f8fafc;
+  margin-bottom: 0.5rem;
+}
+
+.recipe-meta-desc {
+  font-size: 0.875rem;
+  color: #94a3b8;
+  margin-bottom: 2rem;
+}
+
+.meta-specs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding-top: 1.5rem;
+}
+
+.spec-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.spec-value {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+.spec-label {
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #64748b;
+  margin-top: 0.25rem;
+}
+
+/* Right Checklist Card */
+.checklist-card {
+  background: rgba(15, 23, 42, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  border-radius: 24px;
+  padding: 2.5rem;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 15px 35px -15px rgba(0, 0, 0, 0.4);
+}
+
+.checklist-header {
+  margin-bottom: 2rem;
+}
+
+.progress-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.progress-info h2 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+.progress-count {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #64748b;
+  transition: color 0.3s ease;
+}
+
+.progress-count.completed {
+  color: #34d399;
+}
+
+/* Linear Progress Bar */
+.progress-bar-container {
+  height: 6px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
+  transition: width 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 0%;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   CORE COMPONENT: ease-ingredient-checklist
+   ────────────────────────────────────────────────────────────────────────── */
+.ease-ingredient-checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  margin-bottom: 2rem;
+}
+
+.ease-ingredient-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  cursor: pointer;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.01);
+  border: 1px solid rgba(255, 255, 255, 0.02);
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+  position: relative;
+}
+
+.ease-ingredient-item:hover {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(16, 185, 129, 0.15);
+}
+
+/* Hide native inputs but keep them focusable for keyboard accessibility */
+.ease-ingredient-checkbox {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Custom Checkbox Box */
+.ease-checkbox-custom {
+  width: 22px;
+  height: 22px;
+  border: 2px solid #475569;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.15s ease;
+  flex-shrink: 0;
+}
+
+.checkmark-svg {
+  width: 13px;
+  height: 13px;
+  color: #ffffff;
+  display: block;
+}
+
+.checkmark-svg polyline {
+  stroke-dasharray: 22;
+  stroke-dashoffset: 22;
+  transition: stroke-dashoffset 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Keyboard focus state ring */
+.ease-ingredient-checkbox:focus-visible ~ .ease-checkbox-custom {
+  outline: 2px solid #10b981;
+  outline-offset: 2px;
+}
+
+/* Checked State checkbox box transitions */
+.ease-ingredient-checkbox:checked ~ .ease-checkbox-custom {
+  background: #10b981;
+  border-color: #10b981;
+  animation: checkboxBounce 350ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Draw checkmark on checked */
+.ease-ingredient-checkbox:checked
+  ~ .ease-checkbox-custom
+  .checkmark-svg
+  polyline {
+  stroke-dashoffset: 0;
+  transition-delay: 0.05s;
+}
+
+/* Checkbox Bounce keyframes */
+@keyframes checkboxBounce {
+  0% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.22);
+  }
+  75% {
+    transform: scale(0.94);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* ── Item Dimming & Line-through drawing ────────────────────────────────── */
+.ease-ingredient-text {
+  font-size: 0.95rem;
+  color: #e2e8f0;
+  display: inline-flex;
+  gap: 0.5rem;
+  position: relative;
+  transition:
+    opacity 0.3s ease,
+    color 0.3s ease;
+}
+
+/* Line-through drawing using absolute pseudo-element */
+.ease-ingredient-text::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 52%;
+  width: 0;
+  height: 1.5px;
+  background: #64748b;
+  transform: translateY(-50%);
+  transition: width 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+/* Checked state text styles */
+.ease-ingredient-checkbox:checked ~ .ease-ingredient-text {
+  opacity: 0.45;
+  color: #64748b;
+}
+
+.ease-ingredient-checkbox:checked ~ .ease-ingredient-text::after {
+  width: 100%;
+}
+
+/* Text quantities highlighted */
+.ingredient-amount {
+  font-weight: 700;
+  color: #10b981;
+  transition: color 0.3s ease;
+}
+
+.ease-ingredient-checkbox:checked ~ .ease-ingredient-text .ingredient-amount {
+  color: #64748b;
+}
+
+/* Checklist Actions panel */
+.checklist-actions {
+  display: flex;
+  gap: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding-top: 1.5rem;
+}
+
+.action-btn {
+  background: rgba(15, 23, 42, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: #94a3b8;
+  padding: 0.55rem 1rem;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.action-btn:hover {
+  background: rgba(15, 23, 42, 0.8);
+  color: #f8fafc;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.select-all-btn:hover {
+  color: #34d399;
+  border-color: rgba(16, 185, 129, 0.25);
+}
+
+/* ── Accessibility: Reduced Motion ───────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .ease-checkbox-custom,
+  .checkmark-svg polyline,
+  .ease-ingredient-text,
+  .ease-ingredient-text::after,
+  .ingredient-amount,
+  .progress-bar-fill,
+  .action-btn {
+    transition: none !important;
+  }
+
+  .ease-ingredient-checkbox:checked ~ .ease-checkbox-custom {
+    animation: none !important;
+  }
+}
+
+/* Responsive adjust */
+@media (max-width: 820px) {
+  .recipe-layout {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .checklist-card {
+    padding: 1.75rem;
+  }
+}

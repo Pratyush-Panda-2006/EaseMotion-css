@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EaseMotion CSS — Newsletter Signup Modal with Celebration Burst</title>
+    <!-- Outfit & Fira Code Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Outfit:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="modal-workspace">
+      <!-- Header -->
+      <header class="matrix-header">
+        <h1>Newsletter Signup Modal</h1>
+        <p>
+          Click the button below to launch the interactive subscription modal.
+          Submit a valid email to trigger the loading lifecycle and particle celebration burst.
+        </p>
+      </header>
+
+      <!-- Launch button -->
+      <button class="demo-trigger-btn" id="launch-modal-btn">Sign Up for Newsletter</button>
+
+      <!-- Modal overlay wrapper -->
+      <div class="modal-overlay" id="modal-overlay">
+        <!-- Modal body card -->
+        <div class="modal-card">
+          <button class="modal-close" id="close-modal-btn">&times;</button>
+          
+          <div id="modal-content-stage">
+            <!-- Initial form UI -->
+            <form class="modal-form" id="signup-form" onsubmit="return false;">
+              <div style="text-align:center;">
+                <div style="font-size: 2.25rem; margin-bottom: 0.5rem;">✉️</div>
+                <h3 style="font-size:1.4rem; font-weight:800; margin:0 0 0.5rem 0; color:#fff;">Join Our Newsletter</h3>
+                <p style="font-size:0.85rem; color:var(--modal-text-secondary); margin:0;">
+                  Get the latest animations tips, design trends, and guides delivered straight to your inbox.
+                </p>
+              </div>
+
+              <div style="display:flex; flex-direction:column; gap:0.5rem;">
+                <input type="email" id="email-field" class="form-input" placeholder="Enter your email address" required />
+                <div class="error-txt" id="error-message" style="display:none;"></div>
+              </div>
+
+              <button type="submit" id="submit-btn" class="demo-trigger-btn" style="width:100%; box-shadow:none;">
+                Subscribe
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Code Block -->
+      <div class="code-panel">
+        <h4>React Component Copy-Paste Usage (.jsx)</h4>
+        <pre id="code-view" class="code-view"></pre>
+      </div>
+
+      <!-- Footer -->
+      <footer class="footer">
+        <p>
+          EaseMotion CSS — Created for GSSOC 2026. View issue on
+          <a
+            href="https://github.com/SAPTARSHI-coder/EaseMotion-css/issues/27369"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub #27369</a
+          >.
+        </p>
+      </footer>
+    </div>
+
+    <!-- Active interactive modal logic -->
+    <script>
+      (function () {
+        const launchModalBtn = document.getElementById("launch-modal-btn");
+        const modalOverlay = document.getElementById("modal-overlay");
+        const closeModalBtn = document.getElementById("close-modal-btn");
+        const signupForm = document.getElementById("signup-form");
+        const emailField = document.getElementById("email-field");
+        const errorMessage = document.getElementById("error-message");
+        const submitBtn = document.getElementById("submit-btn");
+        const modalContentStage = document.getElementById("modal-content-stage");
+        const codeView = document.getElementById("code-view");
+
+        function openModal() {
+          resetForm();
+          modalOverlay.classList.add("active");
+        }
+
+        function closeModal() {
+          modalOverlay.classList.remove("active");
+        }
+
+        function resetForm() {
+          modalContentStage.innerHTML = `
+            <form class="modal-form" id="signup-form" onsubmit="return false;">
+              <div style="text-align:center;">
+                <div style="font-size: 2.25rem; margin-bottom: 0.5rem;">✉️</div>
+                <h3 style="font-size:1.4rem; font-weight:800; margin:0 0 0.5rem 0; color:#fff;">Join Our Newsletter</h3>
+                <p style="font-size:0.85rem; color:var(--modal-text-secondary); margin:0;">
+                  Get the latest animations tips, design trends, and guides delivered straight to your inbox.
+                </p>
+              </div>
+
+              <div style="display:flex; flex-direction:column; gap:0.5rem;">
+                <input type="email" id="email-field" class="form-input" placeholder="Enter your email address" required />
+                <div class="error-txt" id="error-message" style="display:none;"></div>
+              </div>
+
+              <button type="submit" id="submit-btn" class="demo-trigger-btn" style="width:100%; box-shadow:none;">
+                Subscribe
+              </button>
+            </form>
+          `;
+          
+          // Re-attach submit handler
+          const newForm = document.getElementById("signup-form");
+          newForm.addEventListener("submit", handleSubmit);
+        }
+
+        function handleSubmit(e) {
+          e.preventDefault();
+          const email = document.getElementById("email-field").value.trim();
+          const errDiv = document.getElementById("error-message");
+          const btn = document.getElementById("submit-btn");
+
+          errDiv.style.display = "none";
+          errDiv.textContent = "";
+
+          if (!email) {
+            errDiv.style.display = "block";
+            errDiv.textContent = "Email address is required.";
+            return;
+          }
+
+          // Trigger loading spinner
+          btn.disabled = true;
+          btn.innerHTML = `<span class="spinner"></span>`;
+
+          setTimeout(() => {
+            triggerSuccessScreen();
+          }, 1200);
+        }
+
+        function triggerSuccessScreen() {
+          modalContentStage.innerHTML = `
+            <div class="success-screen">
+              <div class="particles-holder" id="particles-holder"></div>
+              <div style="font-size: 3rem; margin-bottom: 1rem;">🎉</div>
+              <h3 style="font-size:1.5rem; font-weight:800; color:var(--modal-accent-emerald); margin:0 0 0.5rem 0;">Subscribed Successfully!</h3>
+              <p style="font-size:0.9rem; color:var(--modal-text-secondary); margin:0 0 1.5rem 0;">
+                Thank you for subscribing! Check your inbox for your welcome details.
+              </p>
+              <button class="demo-trigger-btn" id="finish-btn" style="padding:0.5rem 1.5rem; font-size:0.9rem; box-shadow:none;">Close Window</button>
+            </div>
+          `;
+
+          const finishBtn = document.getElementById("finish-btn");
+          finishBtn.addEventListener("click", closeModal);
+
+          generateConfetti();
+        }
+
+        // Generate confetti burst particles
+        function generateConfetti() {
+          const holder = document.getElementById("particles-holder");
+          const colors = ["#8b5cf6", "#3b82f6", "#10b981", "#f59e0b", "#f43f5e"];
+          
+          for (let i = 0; i < 24; i++) {
+            const dot = document.createElement("div");
+            dot.className = "confetti-dot";
+            
+            const angle = (i * 360) / 24;
+            const distance = 80 + Math.random() * 40;
+            const duration = 0.6 + Math.random() * 0.4;
+            
+            dot.style.backgroundColor = colors[i % colors.length];
+            dot.style.setProperty("--angle", `${angle}deg`);
+            dot.style.setProperty("--distance", `${distance}px`);
+            
+            dot.style.animation = `burst-out ${duration}s cubic-bezier(0.1, 0.8, 0.3, 1) forwards`;
+            
+            holder.appendChild(dot);
+          }
+        }
+
+        function renderReactCode() {
+          const codeText = `// React Usage Example:\nimport React, { useState } from 'react';\nimport NewsletterSignupModal from './NewsletterSignupModal';\n\nexport default function App() {\n  const [isOpen, setIsOpen] = useState(false);\n\n  return (\n    <>\n      <button onClick={() => setIsOpen(true)}>Subscribe</button>\n      <NewsletterSignupModal \n        isOpen={isOpen} \n        onClose={() => setIsOpen(false)}\n        title="Stay Animated!"\n        description="Receive the latest CSS animations tips directly to your inbox."\n        accentColor="#8b5cf6" \n      />\n    </>\n  );\n}`;
+          codeView.textContent = codeText;
+        }
+
+        launchModalBtn.addEventListener("click", openModal);
+        closeModalBtn.addEventListener("click", closeModal);
+        modalOverlay.addEventListener("click", (e) => {
+          if (e.target === modalOverlay) closeModal();
+        });
+
+        // Initial setup
+        resetForm();
+        renderReactCode();
+      })();
+    </script>
+  </body>
+</html>

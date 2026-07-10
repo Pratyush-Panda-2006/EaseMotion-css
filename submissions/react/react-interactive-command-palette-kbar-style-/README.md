@@ -1,18 +1,23 @@
-# Interactive Command Palette (Kbar Style)
+# React Component: Interactive Command Palette (Kbar Style) - Phase #735
 
-A modular, copy-paste ready React component that renders a keyboard-accessible command palette. It opens on `Ctrl+K` / `Cmd+K` keystrokes, provides fuzzy search filtering across categorized action items, and supports full keyboard navigation (Up/Down arrow highlight selections, Enter executes, Escape closes).
+1. **What does this do?**  
+   It renders a modular, copy-paste ready React component for an **Interactive Command Palette (Kbar Style)** styled with smooth backdrop blur overlays, nested submenus support, global shortcut triggers, and customizable styling options.
+
+2. **How is it used?**  
+   Import [CommandPalette.jsx](./CommandPalette.jsx) into your React application and pass an actions list array containing execution callbacks. Hitting `Ctrl+K` or `Cmd+K` toggles the palette.
+   
+3. **Why is it useful?**  
+   It delivers zero-dependency keyboard accessible search lists, fuzzy text matching keyword filters, nested children action stacks, and customizable color themes.
 
 ---
 
 ## 📦 Installation
 
-This component has zero external dependencies outside React and standard EaseMotion CSS libraries.
-
-1. Copy [CommandPalette.jsx](./CommandPalette.jsx) into your React component directory.
-2. Link the core EaseMotion CSS stylesheet inside your application entry file (e.g. `App.js` or `main.js`):
+Copy [CommandPalette.jsx](./CommandPalette.jsx) and [style.css](./style.css) into your component directory. Import the component and style inside your React entry point:
 
 ```javascript
-import 'ease-motion-css/easemotion.css';
+import CommandPalette from './CommandPalette';
+import './style.css';
 ```
 
 ---
@@ -20,77 +25,58 @@ import 'ease-motion-css/easemotion.css';
 ## 🚀 Usage Example
 
 ```jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import CommandPalette from './CommandPalette';
 
 export default function App() {
   const [isOpen, setIsOpen] = useState(false);
 
-  // Toggle Command Palette on Ctrl+K / Cmd+K
-  useEffect(() => {
-    const handleGlobalKey = (e) => {
-      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
-        e.preventDefault();
-        setIsOpen(prev => !prev);
-      }
-    };
-    window.addEventListener('keydown', handleGlobalKey);
-    return () => window.removeEventListener('keydown', handleGlobalKey);
-  }, []);
-
-  const actionsList = [
+  const actions = [
     {
-      id: 'search_projects',
-      title: 'Search Projects...',
-      subtitle: 'Find and view active repository projects',
-      shortcut: ['ctrl', 'p'],
-      category: 'Search',
-      onSelect: () => console.log('Searching projects...')
+      id: 'home',
+      name: 'Go to Dashboard',
+      shortcut: ['h'],
+      keywords: ['dashboard', 'home', 'main'],
+      section: 'Navigation',
+      perform: () => console.log('Navigating to Dashboard...'),
+      icon: '🏠'
     },
     {
-      id: 'go_home',
-      title: 'Go to Dashboard',
-      subtitle: 'Navigate to user account command center',
-      shortcut: ['g', 'd'],
-      category: 'Navigation',
-      onSelect: () => console.log('Navigating to dashboard...')
-    },
-    {
-      id: 'theme_dark',
-      title: 'Toggle Dark Mode',
-      subtitle: 'Swap system theme appearance to dark',
-      shortcut: ['t', 'd'],
-      category: 'Settings',
-      onSelect: () => console.log('Dark theme enabled.')
+      id: 'theme',
+      name: 'Change Theme...',
+      shortcut: ['t'],
+      keywords: ['dark', 'light', 'glass', 'color'],
+      section: 'Preferences',
+      icon: '🎨',
+      children: [
+        {
+          id: 'theme-dark',
+          name: 'Dark Mode',
+          keywords: ['dark', 'night'],
+          perform: () => console.log('Dark theme activated'),
+          icon: '🌙'
+        },
+        {
+          id: 'theme-light',
+          name: 'Light Mode',
+          keywords: ['light', 'day'],
+          perform: () => console.log('Light theme activated'),
+          icon: '☀️'
+        }
+      ]
     }
   ];
 
   return (
-    <div className="container" style={{ padding: '3rem', backgroundColor: '#030712', minHeight: '100vh', color: '#fff', textAlign: 'center' }}>
-      <h2>Interactive Command Palette Showcase</h2>
-      <p style={{ color: '#9ca3af' }}>Press <kbd>Ctrl + K</kbd> or <kbd>Cmd + K</kbd> to launch the command menu.</p>
+    <div style={{ padding: '3rem', color: '#fff' }}>
+      <h1>Interactive Command Palette Showcase</h1>
+      <button onClick={() => setIsOpen(true)}>Open Palette (Ctrl + K)</button>
       
-      <button 
-        onClick={() => setIsOpen(true)}
-        style={{
-          padding: '0.6rem 1.5rem',
-          borderRadius: '8px',
-          backgroundColor: '#8b5cf6',
-          color: '#fff',
-          fontWeight: 700,
-          border: 'none',
-          cursor: 'pointer',
-          marginTop: '1rem'
-        }}
-      >
-        Open Command Palette
-      </button>
-
       <CommandPalette 
-        isOpen={isOpen} 
-        onClose={() => setIsOpen(false)} 
-        actions={actionsList}
-        accentColor="#8b5cf6"
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        actions={actions}
+        theme="glass"
       />
     </div>
   );
@@ -99,20 +85,30 @@ export default function App() {
 
 ---
 
-## ⚙️ Props Specifications
+## ⚙5 Props Specifications
 
 | Prop | Type | Default | Description |
 | :--- | :--- | :--- | :--- |
-| `isOpen` | `boolean` | *Required* | Controls the visible active state of the command palette overlay. |
-| `onClose` | `Function` | *Required* | Callback triggered when hitting Escape key or clicking outer overlay backdrop. |
-| `actions` | `Array` | `[]` | Array of action config objects: `[{ id, title, subtitle, shortcut, category, onSelect }]`. |
-| `accentColor` | `string` | `'#8b5cf6'` | Left border indicator color for the currently highlighted search result item. |
+| `actions` | `array` | *Required* | Array of structured action objects (id, name, shortcut, keywords, section, perform, children, icon). |
+| `isOpen` | `boolean` | `undefined` | Controlled toggle state. If not provided, toggles globally on `Ctrl+K`. |
+| `onClose` | `function`| `undefined` | Callback when palette closes. |
+| `placeholder` | `string` | `'Type a command...'` | Input placeholder text. |
+| `theme` | `string` | `'glass'` | Theme styling: `'glass' \| 'dark' \| 'light'`. |
+| `accentColor` | `string` | `'#06b6d4'` | Highlight styling theme color. |
+| `enableRecentCommands` | `boolean` | `true` | Prepend recently selected commands at the top. |
+| `maxRecentCommands` | `number` | `5` | Capacity of recent actions list. |
 
 ---
 
-## ⌨️ Supported Keybindings
+## 🎨 Design and Layout Features
 
-* **Ctrl + K** / **Cmd + K**: Launches/toggles the palette drawer.
-* **Arrow Up** / **Arrow Down**: Shifts active index focus across filtered command choices.
-* **Enter**: Triggers the `onSelect()` callback of the highlighted command item.
-* **Escape**: Instantly closes the overlay window.
+### 1. Radial Cursor Spotlight
+The palette contains a mouse-movement spotlight tracking layout using CSS custom variables `--mouse-x` and `--mouse-y` dynamically set on hover:
+```css
+backgroundImage: radial-gradient(circle 120px at var(--mouse-x, 0) var(--mouse-y, 0), ...)
+```
+
+### 2. Micro-Animations
+The backdrop utilizes a soft fade transition, while the dialog box slides and scales into position, ensuring a professional, premium interface matching modern command interfaces:
+- Overlay transition timing: `0.2s`
+- Dialog entry curve: `cubic-bezier(0.16, 1, 0.3, 1)`

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Wiggle Effect for Invalid Form Input - A subtle horizontal wiggle animation for form validation feedback">
+    <title>Wiggle Effect for Invalid Form Input | EaseMotion CSS</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="page-wrapper">
+        <header class="page-header">
+            <h1>Wiggle Effect for Invalid Form Input</h1>
+            <p class="subtitle">Subtle horizontal wiggle animation for form validation feedback</p>
+        </header>
+
+        <main class="main-content">
+            <section class="demo-section">
+                <h2>Demo Form</h2>
+                <p class="demo-description">Try submitting the form with invalid data to see the wiggle animation in action.</p>
+                
+                <form class="demo-form" novalidate>
+                    <div class="form-group">
+                        <label for="email">Email Address <span class="required" aria-hidden="true">*</span></label>
+                        <input 
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            placeholder="Enter your email address" 
+                            required
+                            autocomplete="email"
+                            aria-describedby="email-error"
+                        >
+                        <p id="email-error" class="error-message" aria-live="polite">Please enter a valid email address.</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="username">Username <span class="required" aria-hidden="true">*</span></label>
+                        <input 
+                            type="text" 
+                            id="username" 
+                            name="username" 
+                            placeholder="Choose a username" 
+                            required
+                            minlength="3"
+                            maxlength="20"
+                            pattern="[a-zA-Z0-9_]+"
+                            autocomplete="username"
+                            aria-describedby="username-error"
+                        >
+                        <p id="username-error" class="error-message" aria-live="polite">Username must be 3-20 characters (letters, numbers, underscore only).</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password <span class="required" aria-hidden="true">*</span></label>
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password" 
+                            placeholder="Create a password" 
+                            required
+                            minlength="8"
+                            autocomplete="new-password"
+                            aria-describedby="password-error"
+                        >
+                        <p id="password-error" class="error-message" aria-live="polite">Password must be at least 8 characters long.</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirm-password">Confirm Password <span class="required" aria-hidden="true">*</span></label>
+                        <input 
+                            type="password" 
+                            id="confirm-password" 
+                            name="confirm-password" 
+                            placeholder="Confirm your password" 
+                            required
+                            autocomplete="new-password"
+                            aria-describedby="confirm-error"
+                        >
+                        <p id="confirm-error" class="error-message" aria-live="polite">Passwords do not match.</p>
+                    </div>
+
+                    <div class="form-group checkbox-group">
+                        <input type="checkbox" id="terms" name="terms" required>
+                        <label for="terms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
+                        <p class="error-message" aria-live="polite">You must agree to the terms and conditions.</p>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Create Account</button>
+                    
+                    <p class="form-note" aria-live="polite" hidden></p>
+                </form>
+            </section>
+
+            <section class="code-section">
+                <h2>How It Works</h2>
+                <p>The wiggle animation is triggered using CSS <code>:invalid</code> pseudo-class combined with the <code>:not(:placeholder-shown)</code> selector to ensure the animation only plays after user interaction.</p>
+                
+                <div class="code-block">
+                    <pre><code>@keyframes wiggleInput {
+    0%, 100% { transform: translateX(0); }
+    20%      { transform: translateX(-6px); }
+    40%      { transform: translateX(6px); }
+    60%      { transform: translateX(-4px); }
+    80%      { transform: translateX(4px); }
+}
+
+input:invalid:not(:placeholder-shown) {
+    animation: wiggleInput 0.5s ease-in-out;
+    border-color: var(--color-error);
+}</code></pre>
+                </div>
+            </section>
+
+            <section class="features-section">
+                <h2>Key Features</h2>
+                <ul class="features-list">
+                    <li><strong>Pure CSS</strong> - No JavaScript required for the animation</li>
+                    <li><strong>Accessible</strong> - Respects <code>prefers-reduced-motion</code>, includes ARIA live regions</li>
+                    <li><strong>Responsive</strong> - Works on all screen sizes</li>
+                    <li><strong>Semantic HTML</strong> - Uses proper form elements and labels</li>
+                    <li><strong>No Layout Shift</strong> - Animation uses transform, doesn't affect layout</li>
+                    <li><strong>Customizable</strong> - Easy to adjust timing, distance, and colors</li>
+                </ul>
+            </section>
+        </main>
+
+        <footer class="page-footer">
+            <p>Part of <a href="https://github.com/SAPTARSHI-coder/EaseMotion-css">EaseMotion CSS</a> examples collection</p>
+        </footer>
+    </div>
+
+    <script>
+        // Simple form validation enhancement for demo purposes
+        const form = document.querySelector('.demo-form');
+        const password = document.getElementById('password');
+        const confirmPassword = document.getElementById('confirm-password');
+        const formNote = form.querySelector('.form-note');
+
+        // Custom validation for password match
+        confirmPassword.addEventListener('input', () => {
+            if (confirmPassword.value && password.value !== confirmPassword.value) {
+                confirmPassword.setCustomValidity('Passwords do not match');
+            } else {
+                confirmPassword.setCustomValidity('');
+            }
+        });
+
+        password.addEventListener('input', () => {
+            if (confirmPassword.value && password.value !== confirmPassword.value) {
+                confirmPassword.setCustomValidity('Passwords do not match');
+            } else {
+                confirmPassword.setCustomValidity('');
+            }
+        });
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            if (form.checkValidity()) {
+                formNote.textContent = 'Form submitted successfully! ✓';
+                formNote.hidden = false;
+                formNote.style.color = 'var(--color-success)';
+            } else {
+                formNote.textContent = 'Please fix the errors above.';
+                formNote.hidden = false;
+                formNote.style.color = 'var(--color-error)';
+            }
+            
+            form.reportValidity();
+        });
+
+        // Clear note on input
+        form.addEventListener('input', () => {
+            formNote.hidden = true;
+        });
+    </script>
+</body>
+</html>
